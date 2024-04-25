@@ -69,4 +69,15 @@ class Province extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Resident::class, ['province_id' => 'id']);
     }
+
+    public function beforeValidate()
+    {
+        if (parent::beforeValidate()) {
+            if (! $this->isNewRecord) {
+                $this->updated_date = date('Y-m-d H:i:s');
+            }
+        }
+
+        return true;
+    }
 }

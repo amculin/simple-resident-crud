@@ -17,8 +17,7 @@ class ProvinceSearch extends Province
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['name', 'created_date', 'updated_date'], 'safe'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -46,6 +45,9 @@ class ProvinceSearch extends Province
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
         ]);
 
         $this->load($params);

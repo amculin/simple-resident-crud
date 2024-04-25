@@ -17,7 +17,7 @@ class FActionColumn extends ActionColumn
     {
         $this->initDefaultButton('update', 'pencil');
         $this->initDefaultButton('delete', 'trash', [
-            'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+            'data-confirm' => Yii::t('yii', 'Apakah anda yakin ingin menghapus data ini?'),
             'data-method' => 'post',
         ]);
     }
