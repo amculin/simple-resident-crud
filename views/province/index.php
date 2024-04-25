@@ -1,5 +1,6 @@
 <?php
 
+use app\customs\FActionColumn;
 use app\models\Province;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -10,35 +11,41 @@ use yii\widgets\Pjax;
 /** @var app\models\ProvinceSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Provinces';
+$this->title = 'Provinsi';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="province-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Province', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <div class="row">
+        <div class="col-lg-8">
+            <?= Html::a('Tambah', ['create'], ['class' => 'btn btn-success']) ?>
+        </div>
+        <div class="col-lg-4">
+            <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+        </div>
+    </div>
 
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        'filterModel' => null,
+        'summary' => '',
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'name',
-            'created_date',
-            'updated_date',
             [
-                'class' => ActionColumn::className(),
+                'class' => 'yii\grid\SerialColumn',
+                'header' => 'No.',
+                'headerOptions' => ['style' => 'width: 5%']
+            ],
+            'name',
+            [
+                'class' => FActionColumn::className(),
                 'urlCreator' => function ($action, Province $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                },
+                'headerOptions' => ['style' => 'width: 7%']
             ],
         ],
     ]); ?>

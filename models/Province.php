@@ -44,7 +44,7 @@ class Province extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Nama',
             'created_date' => 'Created Date',
             'updated_date' => 'Updated Date',
         ];

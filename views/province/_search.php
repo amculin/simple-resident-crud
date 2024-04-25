@@ -18,18 +18,12 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <?= $form->field($model, 'name')->textInput(['placeholder' => 'Search by Name'])->label(false) ?>
 
-    <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'created_date') ?>
-
-    <?= $form->field($model, 'updated_date') ?>
-
-    <div class="form-group">
+    <!-- <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
-    </div>
+    </div> -->
 
     <?php ActiveForm::end(); ?>
 
