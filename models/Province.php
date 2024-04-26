@@ -44,7 +44,7 @@ class Province extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Nama',
             'created_date' => 'Created Date',
             'updated_date' => 'Updated Date',
         ];
@@ -68,5 +68,16 @@ class Province extends \yii\db\ActiveRecord
     public function getResidents()
     {
         return $this->hasMany(Resident::class, ['province_id' => 'id']);
+    }
+
+    public function beforeValidate()
+    {
+        if (parent::beforeValidate()) {
+            if (! $this->isNewRecord) {
+                $this->updated_date = date('Y-m-d H:i:s');
+            }
+        }
+
+        return true;
     }
 }

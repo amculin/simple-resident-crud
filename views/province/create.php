@@ -5,9 +5,9 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\Province $model */
 
-$this->title = 'Create Province';
-$this->params['breadcrumbs'][] = ['label' => 'Provinces', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Tambah Provinsi';
+$this->params['breadcrumbs'][] = ['label' => 'Provinsi', 'url' => ['index']];
+$this->params['breadcrumbs'][] = 'Form Provinsi';
 ?>
 <div class="province-create">
 
