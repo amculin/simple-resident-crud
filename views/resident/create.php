@@ -5,9 +5,9 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\Resident $model */
 
-$this->title = 'Create Resident';
-$this->params['breadcrumbs'][] = ['label' => 'Residents', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Tambah Penduduk';
+$this->params['breadcrumbs'][] = ['label' => 'Penduduk', 'url' => ['index']];
+$this->params['breadcrumbs'][] = 'Form Penduduk';
 ?>
 <div class="resident-create">
 
@@ -15,6 +15,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'provinceList' => $provinceList,
+        'cityList' => $cityList
     ]) ?>
 
 </div>

@@ -60,13 +60,6 @@ class ProvinceSearch extends Province
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'created_date' => $this->created_date,
-            'updated_date' => $this->updated_date,
-        ]);
-
         $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;

@@ -5,10 +5,9 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\Resident $model */
 
-$this->title = 'Update Resident: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Residents', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Ubah Penduduk: ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => 'Penduduk', 'url' => ['index']];
+$this->params['breadcrumbs'][] = 'Ubah';
 ?>
 <div class="resident-update">
 
@@ -16,6 +15,8 @@ $this->params['breadcrumbs'][] = 'Update';
 
     <?= $this->render('_form', [
         'model' => $model,
+        'provinceList' => $provinceList,
+        'cityList' => $cityList
     ]) ?>
 
 </div>

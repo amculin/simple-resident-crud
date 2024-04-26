@@ -22,6 +22,9 @@ use Yii;
  */
 class Resident extends \yii\db\ActiveRecord
 {
+    const MALE = 1;
+    const FEMALE = 2;
+
     /**
      * {@inheritdoc}
      */
@@ -54,14 +57,14 @@ class Resident extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'sex' => 'Sex',
-            'birth_date' => 'Birth Date',
-            'province_id' => 'Province ID',
-            'city_id' => 'City ID',
-            'address' => 'Address',
-            'created_date' => 'Created Date',
+            'id' => 'NIK',
+            'name' => 'Nama',
+            'sex' => 'Jenis Kelamin',
+            'birth_date' => 'Tanggal Lahir',
+            'province_id' => 'Provinsi',
+            'city_id' => 'Kota',
+            'address' => 'Alamat',
+            'created_date' => 'Timestamp',
             'updated_date' => 'Updated Date',
         ];
     }
@@ -84,5 +87,16 @@ class Resident extends \yii\db\ActiveRecord
     public function getProvince()
     {
         return $this->hasOne(Province::class, ['id' => 'province_id']);
+    }
+
+    public function beforeValidate()
+    {
+        if (parent::beforeValidate()) {
+            if (! $this->isNewRecord) {
+                $this->updated_date = date('Y-m-d H:i:s');
+            }
+        }
+
+        return true;
     }
 }
