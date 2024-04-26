@@ -18,17 +18,16 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="row">
+        <div class="col-md-6">
+            <?= $form->field($model, 'province_id')->dropDownList($provinceList, ['prompt' => 'Pilih Provinsi'])->label(false) ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'name')->textInput(['placeholder' => 'Cari Kota'])->label(false) ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'province_id') ?>
-
-    <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'created_date') ?>
-
-    <?= $form->field($model, 'updated_date') ?>
-
-    <div class="form-group">
+    <div class="form-group" style="display: none">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
     </div>

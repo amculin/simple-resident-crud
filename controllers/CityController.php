@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\City;
 use app\models\CitySearch;
+use app\models\ProvinceSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -40,23 +41,12 @@ class CityController extends Controller
     {
         $searchModel = new CitySearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        $provinceList = ProvinceSearch::getList();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
+            'provinceList' => $provinceList,
             'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single City model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
         ]);
     }
 
@@ -71,14 +61,17 @@ class CityController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index']);
             }
         } else {
             $model->loadDefaultValues();
         }
 
+        $provinceList = ProvinceSearch::getList();
+
         return $this->render('create', [
             'model' => $model,
+            'provinceList' => $provinceList
         ]);
     }
 
@@ -94,11 +87,14 @@ class CityController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
+
+        $provinceList = ProvinceSearch::getList();
 
         return $this->render('update', [
             'model' => $model,
+            'provinceList' => $provinceList
         ]);
     }
 
