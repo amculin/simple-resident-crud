@@ -2,8 +2,10 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\data\SqlDataProvider;
 use app\models\Resident;
 
 /**
@@ -72,5 +74,87 @@ class ResidentSearch extends Resident
         $query->andFilterWhere(['like', $searchAttribute, $this->search]);
 
         return $dataProvider;
+    }
+
+    public function reportByProvince($params, $isExport = true)
+    {
+        $where = '';
+        $bound = [];
+
+        $this->load($params);
+
+        if ($this->name) {
+            $where .= ' WHERE p.name LIKE :name';
+            $bound[':name'] = "%{$this->name}%";
+        }
+
+        $count = Yii::$app->db->createCommand('SELECT COUNT(*) FROM province p' . $where, $bound)->queryScalar();
+        $sql = "SELECT p.name, (SELECT COUNT(*) FROM resident r WHERE r.province_id = p.id) AS jumlah
+            FROM province p{$where} ORDER BY name ASC";
+
+        $config = [
+            'sql' => $sql,
+            'params' => $bound,
+            'totalCount' => $count
+        ];
+
+        if (! $isExport) {
+            $config['pagination'] = [
+                'pageSize' => 10
+            ];
+        }
+
+        $provider = new SqlDataProvider($config);
+
+        return $provider;
+    }
+
+    public function reportByCity($params, $isExport = true)
+    {
+        $filters = [];
+        $bound = [];
+
+        $this->load($params);
+
+        if ($this->name) {
+            $filters[] = 'c.name LIKE :name';
+            $bound[':name'] = "%{$this->name}%";
+        }
+
+        if ($this->province_id) {
+            $filters[] = 'c.province_id = :province_id';
+            $bound[':province_id'] = $this->province_id;
+        }
+
+        if (count($filters) > 0) {
+            $where = ' WHERE ' . implode(' AND ', $filters);
+        } else {
+            $where = '';
+        }
+
+        $sqlCount = "SELECT COUNT(*) FROM city c{$where}";
+
+        $count = Yii::$app->db->createCommand($sqlCount, $bound)->queryScalar();
+        $sql = "SELECT c.name AS kota, p.name AS provinsi, (SELECT COUNT(*) FROM resident r WHERE r.city_id = c.id) AS jumlah
+            FROM city c
+            LEFT JOIN province p ON (p.id = c.province_id)
+            {$where}
+            ORDER BY p.name ASC";
+
+        $config = [
+            'sql' => $sql,
+            'params' => $bound,
+            'totalCount' => $count
+        ];
+
+        if (! $isExport) {
+            $config['pagination'] = [
+                'pageSize' => 10
+            ];
+        }
+
+        $provider = new SqlDataProvider($config);
+
+        return $provider;
     }
 }
