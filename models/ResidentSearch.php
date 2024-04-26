@@ -101,7 +101,50 @@ class ResidentSearch extends Resident
             ],
         ]);
 
-        // returns an array of data rows
-        return $provider;//->getModels();
+        return $provider;
+    }
+
+    public function reportByCity($params)
+    {
+        $filters = [];
+        $bound = [];
+
+        $this->load($params);
+
+        if ($this->name) {
+            $filters[] = 'c.name LIKE :name';
+            $bound[':name'] = "%{$this->name}%";
+        }
+
+        if ($this->province_id) {
+            $filters[] = 'c.province_id = :province_id';
+            $bound[':province_id'] = $this->province_id;
+        }
+
+        if (count($filters) > 0) {
+            $where = ' WHERE ' . implode(' AND ', $filters);
+        } else {
+            $where = '';
+        }
+
+        $sqlCount = "SELECT COUNT(*) FROM city c{$where}";
+
+        $count = Yii::$app->db->createCommand($sqlCount, $bound)->queryScalar();
+        $sql = "SELECT c.name AS kota, p.name AS provinsi, (SELECT COUNT(*) FROM resident r WHERE r.city_id = c.id) AS jumlah
+            FROM city c
+            LEFT JOIN province p ON (p.id = c.province_id)
+            {$where}
+            ORDER BY p.name ASC";
+
+        $provider = new SqlDataProvider([
+            'sql' => $sql,
+            'params' => $bound,
+            'totalCount' => $count,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        return $provider;
     }
 }

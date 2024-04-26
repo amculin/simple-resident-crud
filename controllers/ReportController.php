@@ -10,7 +10,7 @@ class ReportController extends \yii\web\Controller
     public function actionByCity()
     {
         $searchModel = new ResidentSearch();
-        $dataProvider = $searchModel->report($this->request->queryParams);
+        $dataProvider = $searchModel->reportByCity($this->request->queryParams);
         $provinceList = ProvinceSearch::getList();
 
         return $this->render('by-city', [
