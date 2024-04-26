@@ -132,7 +132,7 @@ class CityController extends Controller
     public function actionGetList($id)
     {
         $list = CitySearch::getList($id);
-        echo '<option>Pilih Kota</option>';
+        echo '<option value="">Pilih Kota</option>';
 
         if (!empty($list)) {
 			foreach($list as $id => $name) {
