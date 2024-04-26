@@ -76,7 +76,7 @@ class ResidentSearch extends Resident
         return $dataProvider;
     }
 
-    public function reportByProvince($params)
+    public function reportByProvince($params, $isExport = true)
     {
         $where = '';
         $bound = [];
@@ -92,19 +92,24 @@ class ResidentSearch extends Resident
         $sql = "SELECT p.name, (SELECT COUNT(*) FROM resident r WHERE r.province_id = p.id) AS jumlah
             FROM province p{$where} ORDER BY name ASC";
 
-        $provider = new SqlDataProvider([
+        $config = [
             'sql' => $sql,
             'params' => $bound,
-            'totalCount' => $count,
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-        ]);
+            'totalCount' => $count
+        ];
+
+        if (! $isExport) {
+            $config['pagination'] = [
+                'pageSize' => 10
+            ];
+        }
+
+        $provider = new SqlDataProvider($config);
 
         return $provider;
     }
 
-    public function reportByCity($params)
+    public function reportByCity($params, $isExport = true)
     {
         $filters = [];
         $bound = [];
@@ -136,14 +141,19 @@ class ResidentSearch extends Resident
             {$where}
             ORDER BY p.name ASC";
 
-        $provider = new SqlDataProvider([
+        $config = [
             'sql' => $sql,
             'params' => $bound,
-            'totalCount' => $count,
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-        ]);
+            'totalCount' => $count
+        ];
+
+        if (! $isExport) {
+            $config['pagination'] = [
+                'pageSize' => 10
+            ];
+        }
+
+        $provider = new SqlDataProvider($config);
 
         return $provider;
     }

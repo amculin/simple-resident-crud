@@ -12,6 +12,13 @@ use yii\widgets\Pjax;
 
 $this->title = 'Laporan Provinsi';
 $this->params['breadcrumbs'][] = $this->title;
+$params = \Yii::$app->request->queryString;
+
+if ($params != '') {
+    $exportUrl = 'by-province?export=xls&' . $params;
+} else {
+    $exportUrl = 'by-province?export=xls';
+}
 ?>
 <div class="report-province-index">
 
@@ -19,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
         <div class="col-lg-8">
-        <?= Html::a('Export', ['export-by-province'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Export', [$exportUrl], ['class' => 'btn btn-success']) ?>
         </div>
         <div class="col-lg-4">
             <?php echo $this->render('_search-by-province', ['model' => $searchModel]); ?>
