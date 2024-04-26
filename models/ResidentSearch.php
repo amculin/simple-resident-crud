@@ -2,8 +2,10 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\data\SqlDataProvider;
 use app\models\Resident;
 
 /**
@@ -72,5 +74,34 @@ class ResidentSearch extends Resident
         $query->andFilterWhere(['like', $searchAttribute, $this->search]);
 
         return $dataProvider;
+    }
+
+    public function reportByProvince($params)
+    {
+        $where = '';
+        $bound = [];
+
+        $this->load($params);
+
+        if ($this->name) {
+            $where .= ' WHERE p.name LIKE :name';
+            $bound[':name'] = "%{$this->name}%";
+        }
+
+        $count = Yii::$app->db->createCommand('SELECT COUNT(*) FROM province p' . $where, $bound)->queryScalar();
+        $sql = "SELECT p.name, (SELECT COUNT(*) FROM resident r WHERE r.province_id = p.id) AS jumlah
+            FROM province p{$where} ORDER BY name ASC";
+
+        $provider = new SqlDataProvider([
+            'sql' => $sql,
+            'params' => $bound,
+            'totalCount' => $count,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+
+        // returns an array of data rows
+        return $provider;//->getModels();
     }
 }

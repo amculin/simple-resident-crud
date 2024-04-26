@@ -42,7 +42,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Provinsi', 'url' => ['/province/index']],
             ['label' => 'Kota', 'url' => ['/city/index']],
-            ['label' => 'Penduduk', 'url' => ['/resident/index']]
+            ['label' => 'Penduduk', 'url' => ['/resident/index']],
+            ['label' => 'Laporan Provinsi', 'url' => ['/report/by-province']],
+            ['label' => 'Laporan Kota', 'url' => ['/report/by-city']],
         ]
     ]);
     NavBar::end();
