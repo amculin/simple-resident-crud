@@ -4,7 +4,6 @@ use app\customs\FActionColumn;
 use app\models\Province;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /** @var yii\web\View $this */
@@ -32,7 +31,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => null,
-        //'summary' => '',
         'layout' => "{items}\n{pager}",
         'columns' => [
             [

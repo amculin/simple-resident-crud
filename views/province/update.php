@@ -7,7 +7,6 @@ use yii\helpers\Html;
 
 $this->title = 'Ubah Provinsi: ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Provinsi', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Ubah';
 ?>
 <div class="province-update">
@@ -15,7 +14,7 @@ $this->params['breadcrumbs'][] = 'Ubah';
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'model' => $model
     ]) ?>
 
 </div>

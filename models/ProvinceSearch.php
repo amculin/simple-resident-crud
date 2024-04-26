@@ -2,8 +2,10 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 use app\models\Province;
 
 /**
@@ -68,5 +70,14 @@ class ProvinceSearch extends Province
         $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
+    }
+
+    public static function getList()
+    {
+        $sql = "SELECT id, name FROM province ORDER BY name ASC";
+
+        $data = Yii::$app->db->createCommand($sql)->queryAll();
+
+        return ArrayHelper::map($data, 'id', 'name');
     }
 }
