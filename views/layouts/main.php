@@ -40,9 +40,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'options' => ['class' => 'navbar-nav'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Province', 'url' => ['/province/index']],
-            ['label' => 'City', 'url' => ['/city/index']],
-            ['label' => 'Resident', 'url' => ['/resident/index']]
+            ['label' => 'Provinsi', 'url' => ['/province/index']],
+            ['label' => 'Kota', 'url' => ['/city/index']],
+            ['label' => 'Penduduk', 'url' => ['/resident/index']]
         ]
     ]);
     NavBar::end();

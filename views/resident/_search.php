@@ -18,25 +18,27 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
+    <div class="row">
+        <div class="col-md-4">
+            <?= $form->field($model, 'province_id')->dropDownList($provinceList, [
+                'prompt' => 'Pilih Provinsi',
+                'onchange' => '
+                    $.post("'.Yii::$app->urlManager->createUrl('city/get-list?id=').'"+$(this).val(), function(data) {
+                        $("select#residentsearch-city_id").html(data);
+                    });
+                '])->label(false) ?>
+        </div>
 
-    <?= $form->field($model, 'name') ?>
+        <div class="col-md-4">
+            <?= $form->field($model, 'city_id')->dropDownList($cityList, ['prompt' => 'Pilih Kota'])->label(false) ?>
+        </div>
 
-    <?= $form->field($model, 'sex') ?>
+        <div class="col-md-4">
+            <?= $form->field($model, 'search')->textInput(['placeholder' => 'Cari Nama'])->label(false) ?>
+        </div>
+</div>
 
-    <?= $form->field($model, 'birth_date') ?>
-
-    <?= $form->field($model, 'province_id') ?>
-
-    <?php // echo $form->field($model, 'city_id') ?>
-
-    <?php // echo $form->field($model, 'address') ?>
-
-    <?php // echo $form->field($model, 'created_date') ?>
-
-    <?php // echo $form->field($model, 'updated_date') ?>
-
-    <div class="form-group">
+    <div class="form-group" style="display: none;">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
         <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
     </div>

@@ -2,9 +2,11 @@
 
 namespace app\models;
 
+use Yii;
+use app\models\City;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\City;
+use yii\helpers\ArrayHelper;
 
 /**
  * CitySearch represents the model behind the search form of `app\models\City`.
@@ -17,8 +19,8 @@ class CitySearch extends City
     public function rules()
     {
         return [
-            [['id', 'province_id'], 'integer'],
-            [['name', 'created_date', 'updated_date'], 'safe'],
+            [['province_id'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -60,15 +62,19 @@ class CitySearch extends City
         }
 
         // grid filtering conditions
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'province_id' => $this->province_id,
-            'created_date' => $this->created_date,
-            'updated_date' => $this->updated_date,
-        ]);
+        $query->andFilterWhere(['province_id' => $this->province_id]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
+    }
+
+    public static function getList($provinceID)
+    {
+        $sql = "SELECT id, name FROM city WHERE province_id = :province_id ORDER BY name ASC";
+
+        $data = Yii::$app->db->createCommand($sql, [':province_id' => $provinceID])->queryAll();
+
+        return ArrayHelper::map($data, 'id', 'name');
     }
 }

@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\CitySearch;
+use app\models\ProvinceSearch;
 use app\models\Resident;
 use app\models\ResidentSearch;
 use yii\web\Controller;
@@ -40,23 +42,19 @@ class ResidentController extends Controller
     {
         $searchModel = new ResidentSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
+        $provinceList = ProvinceSearch::getList();
+
+        if ($searchModel->province_id) {
+            $cityList = CitySearch::getList($searchModel->province_id);
+        } else {
+            $cityList = [];
+        }
 
         return $this->render('index', [
+            'provinceList' => $provinceList,
+            'cityList' => $cityList,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Displays a single Resident model.
-     * @param string $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionView($id)
-    {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
         ]);
     }
 
@@ -71,14 +69,18 @@ class ResidentController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['index']);
             }
         } else {
             $model->loadDefaultValues();
         }
 
+        $provinceList = ProvinceSearch::getList();
+
         return $this->render('create', [
             'model' => $model,
+            'provinceList' => $provinceList,
+            'cityList' => []
         ]);
     }
 
@@ -94,11 +96,16 @@ class ResidentController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
+
+        $provinceList = ProvinceSearch::getList();
+        $cityList = CitySearch::getList($model->province_id);
 
         return $this->render('update', [
             'model' => $model,
+            'provinceList' => $provinceList,
+            'cityList' => $cityList
         ]);
     }
 

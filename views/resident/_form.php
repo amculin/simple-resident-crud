@@ -16,22 +16,39 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'sex')->textInput() ?>
+    <?= $form->field($model, 'sex')->radioList([
+        1 => 'Laki-laki',
+        2 => 'Perempuan'
+    ]) ?>
 
-    <?= $form->field($model, 'birth_date')->textInput() ?>
+    <?= $form->field($model, 'birth_date')->widget(\yii\jui\DatePicker::className(), [
+        'options' => [
+            'class' => 'form-control',
+        ],
+        'dateFormat' => 'yyyy-MM-dd',
+        'clientOptions' => [
+            'changeYear' => true,
+            'changeMonth' => true,
+            'yearRange' => '1900:' . date('Y'),
+            'maxDate' => 0
+        ]
+    ]) ?>
 
-    <?= $form->field($model, 'province_id')->textInput() ?>
+    <?= $form->field($model, 'province_id')->dropDownList($provinceList, [
+        'prompt' => 'Pilih Provinsi',
+        'onchange' => '
+            $.post("'.Yii::$app->urlManager->createUrl('city/get-list?id=').'"+$(this).val(), function(data) {
+                $("select#resident-city_id").html(data);
+            });
+        ']) ?>
 
-    <?= $form->field($model, 'city_id')->textInput() ?>
+    <?= $form->field($model, 'city_id')->dropDownList($cityList, ['prompt' => 'Pilih Kota']) ?>
 
-    <?= $form->field($model, 'address')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'created_date')->textInput() ?>
-
-    <?= $form->field($model, 'updated_date')->textInput() ?>
+    <?= $form->field($model, 'address')->textarea(['rows' => 3]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::button('Batal', ['class' => 'btn btn-info', 'type' => 'reset']) ?>&nbsp;&nbsp;
+        <?= Html::submitButton('Simpan', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

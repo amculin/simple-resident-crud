@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\City;
 use app\models\CitySearch;
 use app\models\ProvinceSearch;
@@ -126,5 +127,19 @@ class CityController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionGetList($id)
+    {
+        $list = CitySearch::getList($id);
+        echo '<option>Pilih Kota</option>';
+
+        if (!empty($list)) {
+			foreach($list as $id => $name) {
+				echo '<option value="' . $id. '">' . $name . '</option>';
+			}
+		} else {
+			echo "<option>-</option>";
+		}
     }
 }

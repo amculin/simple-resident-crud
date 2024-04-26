@@ -11,14 +11,15 @@ use app\models\Resident;
  */
 class ResidentSearch extends Resident
 {
+    public $search;
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'name', 'birth_date', 'address', 'created_date', 'updated_date'], 'safe'],
-            [['sex', 'province_id', 'city_id'], 'integer'],
+            [['id', 'name', 'province_id', 'city_id', 'search'], 'safe']
         ];
     }
 
@@ -46,6 +47,9 @@ class ResidentSearch extends Resident
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
         ]);
 
         $this->load($params);
@@ -56,19 +60,16 @@ class ResidentSearch extends Resident
             return $dataProvider;
         }
 
-        // grid filtering conditions
-        $query->andFilterWhere([
-            'sex' => $this->sex,
-            'birth_date' => $this->birth_date,
-            'province_id' => $this->province_id,
-            'city_id' => $this->city_id,
-            'created_date' => $this->created_date,
-            'updated_date' => $this->updated_date,
-        ]);
+        // Search by NIK
+        if (is_numeric($this->search)) {
+            $searchAttribute = 'id';
+        } else { // Search by name
+            $searchAttribute = 'name';
+        }
 
-        $query->andFilterWhere(['like', 'id', $this->id])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'address', $this->address]);
+        $query->andFilterWhere(['province_id' => $this->province_id]);
+        $query->andFilterWhere(['city_id' => $this->city_id]);
+        $query->andFilterWhere(['like', $searchAttribute, $this->search]);
 
         return $dataProvider;
     }
